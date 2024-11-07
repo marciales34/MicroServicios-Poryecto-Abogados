@@ -29,7 +29,7 @@ public class CustomerControllerCasosAbogados {
         List<CustomerCasosAbogados> casos = customerCasosAbogadosRepository.findByAbogadoId(id);
         return !casos.isEmpty() ? ResponseEntity.ok(casos) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-    @GetMapping("/admin/casos") // Endpoint para que el administrador vea todos los casos
+    @GetMapping("/admin") // Endpoint para que el administrador vea todos los casos
     public ResponseEntity<List<CustomerCasosAbogados>> getAllCasosAdmin() {
         List<CustomerCasosAbogados> casos = service.getAll(); // Llama al servicio para obtener todos los casos
         return !casos.isEmpty() ? ResponseEntity.ok(casos) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();

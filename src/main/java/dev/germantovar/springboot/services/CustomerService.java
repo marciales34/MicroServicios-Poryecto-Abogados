@@ -8,24 +8,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomerService implements ICustomerService {
+public class CustomerService{
 
     @Autowired
     private CustomerRepository repository;
-
-    @Override
     public List<Customer> getAll(){
         return (List<Customer>) repository.findAll();
     }
 
-    @Override
-    public Customer save(Customer customer){
-        repository.save(customer);
-        return customer;
-    }
+    public Customer save (Customer customer){
+        return  repository.save(customer);
 
-    @Override // Asegúrate de agregar esta anotación para el método
-    public long countAbogados() {
+    }public long countAbogados() {
         return repository.count(); // Asegúrate de tener un 'repository' para abogados
     }
 }
