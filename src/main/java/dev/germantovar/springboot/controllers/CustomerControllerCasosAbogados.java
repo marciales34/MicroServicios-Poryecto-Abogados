@@ -50,13 +50,18 @@ public class CustomerControllerCasosAbogados {
         return ResponseEntity.ok(service.countCasos());
     }
 
+
+
     @PutMapping("/casos/{id}")
     public ResponseEntity<Object> updateCaso(@PathVariable Long id, @RequestBody CustomerCasosAbogados casoActualizado) {
+        System.out.println("Datos recibidos para actualizar el caso: " + casoActualizado);
+
         if (!customerCasosAbogadosRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         casoActualizado.setId(id);
         CustomerCasosAbogados casoGuardado = customerCasosAbogadosRepository.save(casoActualizado);
+        System.out.println("Caso actualizado: " + casoGuardado); // Verifica si se está actualizando correctamente
         return ResponseEntity.ok(casoGuardado);
     }
 

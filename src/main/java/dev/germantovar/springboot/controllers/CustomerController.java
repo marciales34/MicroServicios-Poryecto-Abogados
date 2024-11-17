@@ -88,5 +88,52 @@ public class CustomerController {
     }
 
 
+    @DeleteMapping("/Abogados/{id}")
+    public ResponseEntity<Void> deleteAbogado(@PathVariable Long id) {
+        if (!customerRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        customerRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // **Método PUT para actualizar un Abogado (Customer)**
+    @PutMapping("/Abogados/{id}")
+    public ResponseEntity<Object> updateAbogado(@PathVariable Long id, @RequestBody Customer customerUpdated) {
+        // Verificar si el abogado (Customer) existe
+        Optional<Customer> existingCustomer = customerRepository.findById(id);
+        if (!existingCustomer.isPresent()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Abogado no encontrado con el id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        // Establecer el id del cliente para asegurarse de que se actualiza el correcto
+        Customer customer = existingCustomer.get();
+        customer.setNombre(customerUpdated.getNombre() != null ? customerUpdated.getNombre() : customer.getNombre());
+        customer.setCorreo(customerUpdated.getCorreo() != null ? customerUpdated.getCorreo() : customer.getCorreo());
+        customer.setPassword(customerUpdated.getPassword() != null ? customerUpdated.getPassword() : customer.getPassword());
+        customer.setRol(customerUpdated.getRol() != null ? customerUpdated.getRol() : customer.getRol());
+        customer.setUpdated_at(LocalDateTime.now().toString());  // Actualizamos la fecha de actualización
+
+        try {
+            // Guardamos el cliente actualizado
+            Customer savedCustomer = customerRepository.save(customer);
+
+            // Responder con el cliente actualizado
+            return ResponseEntity.ok(savedCustomer);
+        } catch (DataIntegrityViolationException e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Error de integridad de datos. Asegúrese de que el correo no esté duplicado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Error interno del servidor");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
+
+
+
 

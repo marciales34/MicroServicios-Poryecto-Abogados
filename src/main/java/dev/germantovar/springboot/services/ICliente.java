@@ -1,7 +1,7 @@
 package dev.germantovar.springboot.services;
 
-import dev.germantovar.springboot.entities.CustomerCasosAbogados;
 import dev.germantovar.springboot.entities.Cliente;
+
 import java.util.List;
 
 public interface ICliente {

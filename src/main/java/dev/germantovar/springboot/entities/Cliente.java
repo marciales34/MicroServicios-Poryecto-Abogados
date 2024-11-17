@@ -29,4 +29,16 @@ public class Cliente {
     private String created_at;
     private String updated_at;
 
+    // Método para asignar automáticamente las fechas de creación y actualización
+    @PrePersist
+    protected void onCreate() {
+        this.created_at = String.valueOf(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updated_at = String.valueOf(LocalDateTime.now());
+    }
+
+
 }
